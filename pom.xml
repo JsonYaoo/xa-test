@@ -11,6 +11,7 @@
     <modules>
         <module>mycat-xa-test</module>
         <module>atomikos-xa-test</module>
+        <module>tcc-test</module>
     </modules>
 
     <parent>
