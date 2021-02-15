@@ -15,7 +15,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-@Component
+@Service
 @Slf4j
 public class OrderScheduler {
 

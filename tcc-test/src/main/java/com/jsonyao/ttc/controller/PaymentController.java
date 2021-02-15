@@ -29,4 +29,18 @@ public class PaymentController {
         int result = paymentService.pament(userId, orderId, amount);
         return "支付结果："+result;
     }
+
+    /**
+     * MQ消息投递: 执行支付、投递消息
+     * @param userId
+     * @param orderId
+     * @param amount
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("paymentMQ")
+    public String paymentMQ(int userId, int orderId, BigDecimal amount) throws Exception {
+        int result = paymentService.pamentMQ(userId, orderId, amount);
+        return "支付结果："+result;
+    }
 }
