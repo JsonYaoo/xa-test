@@ -3,6 +3,7 @@ package com.jsonyao.ttc.service;
 import com.jsonyao.ttc.db143.dao.OrderMapper;
 import com.jsonyao.ttc.db143.model.Order;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -21,6 +22,7 @@ public class OrderService {
      * @param orderId
      * @return 0:成功 1:订单不存在
      */
+    @Transactional
     public int handleOrder(int orderId) {
         Order order = orderMapper.selectByPrimaryKey(orderId);
 
@@ -29,6 +31,9 @@ public class OrderService {
         order.setUpdateTime(new Date());
         order.setUpdateUser(0);//系统更新
         orderMapper.updateByPrimaryKey(order);
+
+        // 测试订单操作接口更新异常
+        int i = 1 / 0;
 
         return 0;
     }

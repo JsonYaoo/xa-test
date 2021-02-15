@@ -82,11 +82,12 @@ public class OrderScheduler {
                 paymentMsg.setStatus(1);//发送成功
                 log.info("订单更新成功, 本地消息发送成功!");
             }else {
-                log.info("订单更新失败, 本地消息开始重新发送...");
                 paymentMsg.setFalureCnt(paymentMsg.getFalureCnt() + 1);
                 if(paymentMsg.getFalureCnt() >= 5) {
                     paymentMsg.setStatus(2);// 失败
                     log.info("订单更新失败, 本地消息发送失败! 失败原因: 已重新发送了"+ paymentMsg.getFalureCnt() +"次, 超出了最大重试次数!");
+                }else {
+                    log.info("订单更新失败, 本地消息开始重新发送...");
                 }
             }
             paymentMsg.setUpdateTime(new Date());
