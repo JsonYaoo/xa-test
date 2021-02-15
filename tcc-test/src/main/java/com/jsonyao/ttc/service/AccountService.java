@@ -39,4 +39,22 @@ public class AccountService {
         accountB.setBalance(accountB.getBalance().add(new BigDecimal(200)));
         accountBMapper.updateByPrimaryKey(accountB);
     }
+
+    /**
+     * 测试多数据源异常时: 只配置了A事务管理器是否能够回滚所有数据源
+     */
+    @Transactional(transactionManager = "transactionManager142")
+    public void aTransferAccount(){
+        // A账户减200
+        AccountA accountA = accountAMapper.selectByPrimaryKey(1);
+        accountA.setBalance(accountA.getBalance().subtract(new BigDecimal(200)));
+        accountAMapper.updateByPrimaryKey(accountA);
+
+        // B账户加200
+        AccountB accountB = accountBMapper.selectByPrimaryKey(2);
+        accountB.setBalance(accountB.getBalance().add(new BigDecimal(200)));
+        accountBMapper.updateByPrimaryKey(accountB);
+
+        int i = 1 / 0;
+    }
 }

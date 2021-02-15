@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -47,5 +49,15 @@ public class Db142Config {
         ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
         sqlSessionFactoryBean.setMapperLocations(resourcePatternResolver.getResources("mybatis/db142/*.xml"));
         return sqlSessionFactoryBean;
+    }
+
+    /**
+     * Spring事务管理器配置: db142事务管理器
+     * @param dataSource
+     * @return
+     */
+    @Bean("transactionManager142")
+    public PlatformTransactionManager transactionManager142(@Qualifier("db142") DataSource dataSource){
+        return new DataSourceTransactionManager(dataSource);
     }
 }

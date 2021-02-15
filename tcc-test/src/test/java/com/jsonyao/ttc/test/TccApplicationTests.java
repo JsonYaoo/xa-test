@@ -26,4 +26,13 @@ public class TccApplicationTests {
     public void defalutTransferAccount(){
         accountService.defalutTransferAccount();
     }
+
+    /**
+     * 测试多数据源异常时: 只配置了A事务管理器是否能够回滚所有数据源
+     * => 结果: 只配置了A事务管理器, 所有数据源并没有全部发生回滚, A账户回滚了, 但B账户多了200
+     */
+    @Test
+    public void aTransferAccount(){
+        accountService.aTransferAccount();
+    }
 }
