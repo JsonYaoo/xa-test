@@ -34,6 +34,11 @@ public class UserController {
         return "user/user-list";
     }
 
+    /**
+     * 根据UserId删除用户: 根据唯一业务号删除可以保证幂等, 最好删除前先查询一下
+     * @param userId
+     * @return
+     */
     @RequestMapping("delUser")
     @ResponseBody
     public Map<String,Object> delUser(@RequestParam Integer userId){
@@ -41,5 +46,37 @@ public class UserController {
         Map<String,Object> map = new HashMap<>();
         map.put("status",result);
         return map;
+    }
+
+    /**
+     * 根据UserId查询用户
+     * @param userId
+     * @return
+     */
+    @RequestMapping("userDetail")
+    public String userDetail(@RequestParam  Integer userId,ModelMap map){
+        User user = userService.selectById(userId);
+        map.addAttribute("user",user);
+        return "user/user-detail";
+    }
+
+    @RequestMapping("updateUser")
+    public String updateUser(User user,String token) throws Exception {
+        userService.updateUser(user);
+
+//        Thread.sleep(5000);
+//
+//        if (user.getId() !=null){
+//            System.out.println("更新用户");
+//            userService.updateUser(user);
+//        }else {
+//            if (tokenSet.contains(token)){
+//                System.out.println("添加用户");
+//                userService.insertUser(user,token);
+//            }else {
+//                throw new Exception("token 不存在");
+//            }
+//        }
+        return "redirect:/user/userList";
     }
 }

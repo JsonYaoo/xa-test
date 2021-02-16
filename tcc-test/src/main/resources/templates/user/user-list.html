@@ -24,6 +24,7 @@
                 <td th:text="${user.age}"></td>
                 <td>
                     <button type="button" name="del" th:attr="userId=${user.id}">删除</button>
+                    <button type="button" name="update" th:attr="userId=${user.id}">修改</button>
                 </td>
             </tr>
         </tbody>
@@ -40,6 +41,11 @@
                     }
                 });
             });
+        });
+
+        $(document).on("click","button[name=update]",function () {
+            var userId = $(this).attr("userId");
+            location.href = "/user/userDetail?userId="+userId;
         });
     </script>
 </body>

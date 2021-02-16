@@ -40,4 +40,22 @@ public class UserService {
         log.info("用户不存在存在，用户为："+userId);
         return 0;
     }
+
+    /**
+     * 根据UserId查询用户
+     * @param userId
+     * @return
+     */
+    public User selectById(Integer userId) {
+        return userMapper.selectByPrimaryKey(userId);
+    }
+
+    /**
+     * 根据UserId更新用户
+     * @param user
+     * @return
+     */
+    public int updateUser(User user) {
+        return userMapper.updateByPrimaryKeySelective(user);
+    }
 }
