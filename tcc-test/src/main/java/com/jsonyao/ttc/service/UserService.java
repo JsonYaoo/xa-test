@@ -67,4 +67,13 @@ public class UserService {
     public int updateUser2(User user) {
         return userMapper.updateUser1(user);
     }
+
+    /**
+     * 根据UserId更新User(有更新次数有版本号)
+     * @param user
+     * @return
+     */
+    public int updateUser3(User user) {
+        return userMapper.updateUser2(user);
+    }
 }

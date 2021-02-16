@@ -106,4 +106,11 @@ public interface UserMapper {
      * @return
      */
     int updateUser1(User user);
+
+    /**
+     * 根据UserId更新User(有更新次数有版本号)
+     * @param user
+     * @return
+     */
+    int updateUser2(User user);
 }

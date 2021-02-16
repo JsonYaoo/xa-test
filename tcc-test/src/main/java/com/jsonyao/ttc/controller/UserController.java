@@ -67,15 +67,17 @@ public class UserController {
      */
     @RequestMapping("updateUser")
     public String updateUser(User user,String token) throws Exception {
+        System.out.println("更新用户");
+        Thread.sleep(5000);
+
         // 1. 业务中没有更改次数时, 多次更新是幂等的
-//        System.out.println("更新用户");
-//        Thread.sleep(5000);
 //        userService.updateUser1(user);
 
         // 2. 业务中有更改次数时, 多次更新不幂等
-        System.out.println("更新用户");
-        Thread.sleep(5000);
-        userService.updateUser2(user);
+//        userService.updateUser2(user);
+
+        // 3. 业务中有更改次数时, 添加版本号, 利用乐观锁和update行锁, 可以保证多次更新的幂等性
+        userService.updateUser3(user);
 
 //        Thread.sleep(5000);
 //        if (user.getId() !=null){
