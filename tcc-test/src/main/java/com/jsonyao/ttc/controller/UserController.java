@@ -60,12 +60,24 @@ public class UserController {
         return "user/user-detail";
     }
 
+    /**
+     * 根据UserId更新用户
+     * @param user
+     * @return
+     */
     @RequestMapping("updateUser")
     public String updateUser(User user,String token) throws Exception {
-        userService.updateUser(user);
+        // 1. 业务中没有更改次数时, 多次更新是幂等的
+//        System.out.println("更新用户");
+//        Thread.sleep(5000);
+//        userService.updateUser1(user);
+
+        // 2. 业务中有更改次数时, 多次更新不幂等
+        System.out.println("更新用户");
+        Thread.sleep(5000);
+        userService.updateUser2(user);
 
 //        Thread.sleep(5000);
-//
 //        if (user.getId() !=null){
 //            System.out.println("更新用户");
 //            userService.updateUser(user);

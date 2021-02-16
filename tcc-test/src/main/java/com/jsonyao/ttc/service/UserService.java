@@ -51,11 +51,20 @@ public class UserService {
     }
 
     /**
-     * 根据UserId更新用户
+     * 根据UserId更新User(无更新次数无版本号)
      * @param user
      * @return
      */
-    public int updateUser(User user) {
+    public int updateUser1(User user) {
         return userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    /**
+     * 根据UserId更新User(有更新次数无版本号)
+     * @param user
+     * @return
+     */
+    public int updateUser2(User user) {
+        return userMapper.updateUser1(user);
     }
 }

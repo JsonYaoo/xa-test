@@ -13,6 +13,7 @@
                 <th>用户名</th>
                 <th>性别</th>
                 <th>年龄</th>
+                <th>更新次数</th>
                 <th>操作</th>
             </tr>
         </thead>
@@ -22,6 +23,7 @@
                 <td th:text="${user.username}"></td>
                 <td th:text="${user.sex}"></td>
                 <td th:text="${user.age}"></td>
+                <td th:text="${user.updateCount}"></td>
                 <td>
                     <button type="button" name="del" th:attr="userId=${user.id}">删除</button>
                     <button type="button" name="update" th:attr="userId=${user.id}">修改</button>
