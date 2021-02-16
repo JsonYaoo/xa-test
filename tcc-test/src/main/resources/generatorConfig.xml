@@ -6,7 +6,7 @@
 <generatorConfiguration>
     <context id="MysqlTables" targetRuntime="MyBatis3">
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.1.143:3306/xa_143?serverTimezone=Asia/Shanghai&amp;useSSL=false"
+                        connectionURL="jdbc:mysql://192.168.1.142:3306/xa_142?serverTimezone=Asia/Shanghai&amp;useSSL=false"
                         userId="imooc"
                         password="Imooc@123456">
             <property name="nullCatalogMeansCurrent" value="true" />
@@ -16,20 +16,20 @@
             <property name="forceBigDecimals" value="false" />
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.jsonyao.ttc.db143.model" targetProject="src\main\java">
+        <javaModelGenerator targetPackage="com.jsonyao.ttc.db142.model" targetProject="src\main\java">
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="mybatis/db143"  targetProject="src\main\resources">
+        <sqlMapGenerator targetPackage="mybatis/db142"  targetProject="src\main\resources">
             <property name="enableSubPackages" value="true" />
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.jsonyao.ttc.db143.dao"  targetProject="src\main\java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.jsonyao.ttc.db142.dao"  targetProject="src\main\java">
             <property name="enableSubPackages" value="true" />
         </javaClientGenerator>
 
-        <table schema="xa_143" tableName="t_order" domainObjectName="Order" ></table>
+        <table schema="xa_142" tableName="t_user" domainObjectName="User" ></table>
 
 
     </context>
