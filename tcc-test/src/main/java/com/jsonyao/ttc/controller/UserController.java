@@ -61,36 +61,58 @@ public class UserController {
     }
 
     /**
-     * 根据UserId更新用户
+     * 根据UserId更新用户: 更新/新增接口复用
      * @param user
      * @return
      */
     @RequestMapping("updateUser")
-    public String updateUser(User user,String token) throws Exception {
-        System.out.println("更新用户");
-        Thread.sleep(5000);
+    public String updateUser(User user, String token) throws Exception {
+        // ID不为空, 说明为更新操作
+        if (user.getId() !=null){
+            System.out.println("更新用户");
+            Thread.sleep(5000);
 
-        // 1. 业务中没有更改次数时, 多次更新是幂等的
+            // 1. 业务中没有更改次数时, 多次更新是幂等的
 //        userService.updateUser1(user);
 
-        // 2. 业务中有更改次数时, 多次更新不幂等
+            // 2. 业务中有更改次数时, 多次更新不幂等
 //        userService.updateUser2(user);
 
-        // 3. 业务中有更改次数时, 添加版本号, 利用乐观锁和update行锁, 可以保证多次更新的幂等性
-        userService.updateUser3(user);
+            // 3. 业务中有更改次数时, 添加版本号, 利用乐观锁和update行锁, 可以保证多次更新的幂等性
+            userService.updateUser3(user);
+        }
+        // ID为空, 说明为插入操作
+        else {
+            System.out.println("添加用户");
+            Thread.sleep(5000);
 
-//        Thread.sleep(5000);
-//        if (user.getId() !=null){
-//            System.out.println("更新用户");
-//            userService.updateUser(user);
-//        }else {
+            // 1. 测试使用唯一业务单号创建分布式锁的场景
+            userService.insertUser(user);
+
 //            if (tokenSet.contains(token)){
 //                System.out.println("添加用户");
 //                userService.insertUser(user,token);
 //            }else {
 //                throw new Exception("token 不存在");
 //            }
-//        }
+        }
+
         return "redirect:/user/userList";
+    }
+
+    /**
+     * 注册用户
+     * @param map
+     * @return
+     */
+    @RequestMapping("register")
+    public String register(ModelMap map){
+//        String token = UUID.randomUUID().toString();
+//        tokenSet.add(token);
+        map.addAttribute("user",new User());
+//        map.addAttribute("token",token);
+
+        // 复用详情页作为新增页
+        return "/user/user-detail";
     }
 }
