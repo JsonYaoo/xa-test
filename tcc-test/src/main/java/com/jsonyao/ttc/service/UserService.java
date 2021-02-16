@@ -100,4 +100,22 @@ public class UserService {
 
         return 0;
     }
+
+    /**
+     * 插入用户: 根据Token创建分布式锁保证幂等性 => 没有唯一业务单号, 则自建Token
+     * @param user
+     * @param token
+     */
+    public int insertUser2(User user, String token) throws Exception {
+        // 根据Token创建分布式锁
+        InterProcessMutex lock = new InterProcessMutex(curatorClient, "/" + token);
+
+        // 获取分布式锁, 只有获取到分布式锁的才执行插入, 且插入后不释放锁, 让其自动过期, 这个主要是防止短时间内抖动的点击, 而要想长期保证唯一需要插入前做业务校验
+        boolean isLock = lock.acquire(30, TimeUnit.SECONDS);
+        if(isLock){
+            return userMapper.insertSelective(user);
+        }
+
+        return 0;
+    }
 }

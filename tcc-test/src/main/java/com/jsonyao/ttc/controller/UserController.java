@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 分布式接口幂等性: 用户测试服务前端控制器
@@ -22,6 +20,11 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    /**
+     * 测试用例可以放JVM内存, 但生产上需要存到Redis中去
+     */
+    private Set<String> tokenSet = new HashSet<>();
 
     /**
      * 查询所有用户
@@ -87,21 +90,22 @@ public class UserController {
             Thread.sleep(5000);
 
             // 1. 测试使用唯一业务单号创建分布式锁的场景
-            userService.insertUser(user);
+//            userService.insertUser(user);
 
-//            if (tokenSet.contains(token)){
-//                System.out.println("添加用户");
-//                userService.insertUser(user,token);
-//            }else {
-//                throw new Exception("token 不存在");
-//            }
+            // 2. 测试没有唯一业务单号时, 使用Token创建分布式锁的场景
+            if (tokenSet.contains(token)){
+                userService.insertUser2(user, token);
+            }else {
+                throw new Exception("token 不存在");
+            }
         }
 
+        // 插入成功后, 重定向到列表页中
         return "redirect:/user/userList";
     }
 
     /**
-     * 注册用户
+     * 注册用户(有唯一业务单号)
      * @param map
      * @return
      */
@@ -111,6 +115,23 @@ public class UserController {
 //        tokenSet.add(token);
         map.addAttribute("user",new User());
 //        map.addAttribute("token",token);
+
+        // 复用详情页作为新增页
+        return "/user/user-detail";
+    }
+
+    /**
+     * 注册用户(没有唯一业务单号, 用Token保证)
+     * @param map
+     * @return
+     */
+    @RequestMapping("register2")
+    public String register2(ModelMap map){
+        // 访问注册页前, 先把Token生成放到注册页的隐藏域中
+        String token = UUID.randomUUID().toString();
+        tokenSet.add(token);
+        map.addAttribute("user",new User());
+        map.addAttribute("token",token);
 
         // 复用详情页作为新增页
         return "/user/user-detail";
