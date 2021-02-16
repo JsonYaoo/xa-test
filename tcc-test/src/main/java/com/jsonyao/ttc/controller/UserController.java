@@ -2,6 +2,7 @@ package com.jsonyao.ttc.controller;
 
 import com.jsonyao.ttc.db142.model.User;
 import com.jsonyao.ttc.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,6 +17,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("user")
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -94,9 +96,12 @@ public class UserController {
 
             // 2. 测试没有唯一业务单号时, 使用Token创建分布式锁的场景
             if (tokenSet.contains(token)){
+                log.info("存在Token!");
                 userService.insertUser2(user, token);
+                tokenSet.remove(token);
             }else {
-                throw new Exception("token 不存在");
+                log.info("token不存在!");
+//                throw new Exception("token 不存在");
             }
         }
 
@@ -111,10 +116,7 @@ public class UserController {
      */
     @RequestMapping("register")
     public String register(ModelMap map){
-//        String token = UUID.randomUUID().toString();
-//        tokenSet.add(token);
         map.addAttribute("user",new User());
-//        map.addAttribute("token",token);
 
         // 复用详情页作为新增页
         return "/user/user-detail";

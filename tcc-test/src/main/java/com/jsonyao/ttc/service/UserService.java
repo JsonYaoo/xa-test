@@ -92,7 +92,7 @@ public class UserService {
         // 根据唯一业务单号创建分布式锁
         InterProcessMutex lock = new InterProcessMutex(curatorClient, "/" + user.getUsername());
 
-        // 获取分布式锁, 只有获取到分布式锁的才执行插入, 且插入后不释放锁, 让其自动过期, 这个主要是防止短时间内抖动的点击, 而要想长期保证username唯一需要插入前做业务校验
+        // 获取分布式锁, 只有获取到分布式锁的才执行插入, 且插入后不释放锁, 让其自动过期, 这个主要是防止短时间内抖动的点击以及并发, 而要想长期保证username唯一需要插入前做业务校验
         boolean isLock = lock.acquire(30, TimeUnit.SECONDS);
         if(isLock){
             return userMapper.insertSelective(user);
@@ -110,12 +110,17 @@ public class UserService {
         // 根据Token创建分布式锁
         InterProcessMutex lock = new InterProcessMutex(curatorClient, "/" + token);
 
-        // 获取分布式锁, 只有获取到分布式锁的才执行插入, 且插入后不释放锁, 让其自动过期, 这个主要是防止短时间内抖动的点击, 而要想长期保证唯一需要插入前做业务校验
+        // 获取分布式锁, 只有获取到分布式锁的才执行插入, 且插入后不释放锁, 让其自动过期, 这个主要是防止短时间内抖动的点击以及并发, 而要想长期保证唯一需要删除对应的Token(这里在前端控制器里已实现)
+        log.info(Thread.currentThread().getName() + "正在尝试获取锁...");
+
+        // 所以可见, acquire方法是阻塞了30s, 获取不到则放弃获取返回false
         boolean isLock = lock.acquire(30, TimeUnit.SECONDS);
         if(isLock){
+            log.info(Thread.currentThread().getName() +  "获取到了锁...");
             return userMapper.insertSelective(user);
         }
 
+        log.info(Thread.currentThread().getName() +  "退出了方法...");
         return 0;
     }
 }
